@@ -39,6 +39,6 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
 
 
-    implementation project(':kawasaki-control-library')
+    implementation project(':kawasakiControlLibrary')
     implementation project(':tcpclient')
 }
