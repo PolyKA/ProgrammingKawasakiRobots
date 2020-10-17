@@ -1,6 +1,6 @@
-package com.github.polyKA.commands
+package com.github.polyKA.kawasakiControlLibrary.commands
 
-import ru.art241111.tcpclient.writer.SenderImp
+import com.github.art241111.tcpClient.writer.SenderImp
 
 class Move(private val sender: SenderImp) {
     /**

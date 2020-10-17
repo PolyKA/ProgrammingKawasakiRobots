@@ -1,8 +1,8 @@
-package com.github.polyKA
+package com.github.polyKA.kawasakiControlLibrary
 
 import com.github.art241111.tcpClient.Client
-import com.github.polyKA.commands.Move
-import com.github.polyKA.handlers.PositionHandler
+import com.github.polyKA.kawasakiControlLibrary.commands.Move
+import com.github.polyKA.kawasakiControlLibrary.handlers.PositionHandler
 
 
 class KawasakiRobot {

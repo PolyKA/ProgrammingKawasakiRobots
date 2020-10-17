@@ -1,6 +1,5 @@
 package com.github.art241111.tcpClient.writer
 
-import ru.art241111.tcpclient.writer.SenderImp
 import java.net.Socket
 
 /**

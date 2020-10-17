@@ -10,7 +10,7 @@ import com.github.art241111.tcpClient.writer.RemoteWriterImp
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import com.github.art241111.tcpClient.handlers.HandlerImp
-import ru.art241111.tcpclient.writer.SenderImp
+import com.github.art241111.tcpClient.writer.SenderImp
 import java.net.Socket
 
 /**

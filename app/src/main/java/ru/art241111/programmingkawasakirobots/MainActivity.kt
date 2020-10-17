@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import com.github.polyKA.KawasakiRobot
+import com.github.polyKA.kawasakiControlLibrary.KawasakiRobot
 import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {

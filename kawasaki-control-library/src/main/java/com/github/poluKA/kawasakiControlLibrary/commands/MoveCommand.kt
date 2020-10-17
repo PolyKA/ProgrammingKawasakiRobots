@@ -1,4 +1,4 @@
-package com.github.polyKA.commands
+package com.github.polyKA.kawasakiControlLibrary.commands
 
 enum class MoveCommand(val command: String) {
     MOVE_BY_X( "MOVE;BASE;1;"),
