@@ -1,16 +1,20 @@
 package ru.art241111.programmingkawasakirobots
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import com.github.polyKA.kawasakiControlLibrary.KawasakiRobot
-import java.lang.Exception
+import androidx.appcompat.app.AppCompatActivity
+import com.github.poluka.kControlLibrary.KRobot
+import com.github.poluka.kControlLibrary.actions.move.MoveToPoint
+import com.github.poluka.kControlLibrary.dsl.kProgram
+import com.github.poluka.kControlLibrary.enity.TypeOfMovement
+import com.github.poluka.kControlLibrary.enity.position.Position
+
 
 class MainActivity : AppCompatActivity() {
-    private val address = "192.168.31.62"
+    private val address = "192.168.56.1"
     private val port = 49152
-    private val robot = KawasakiRobot()
+    private val robot = KRobot()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,17 +26,15 @@ class MainActivity : AppCompatActivity() {
 
         robot.position.observe(this, {
             try {
-                Log.d("position_handler", it.array.toString())
+                Log.d("position_handler", it.toString())
             } catch (e: Exception) {
                 Log.d("position_handler", "error")
             }
         })
 
-        robot.statusRobot.observe(this, {
+        robot.connectRobotStatus.observe(this, {
             Log.d("status_observe", it.toString())
         })
-
-
     }
 
     fun disconnect(view: View) {
@@ -40,7 +42,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun move(view: View) {
-//        robot.sendCommand("MOVE;BASE;1;-100")
-        robot.move.moveByX(100)
+        val home = MoveToPoint(TypeOfMovement.LMOVE, robot.homePosition)
+        val startPosition = Position(220,515,32,90,-180,0)
+        val arcPosition = Position(0,515,132,90,-180,0)
+        val endPosition = Position(-220,515,32,103,-180,6)
+
+        robot.run(kProgram{
+            moveToPoint(TypeOfMovement.LMOVE, startPosition)
+            moveToPoint(TypeOfMovement.JMOVE, arcPosition)
+            moveToPoint(TypeOfMovement.LMOVE, endPosition)
+
+//            moveByArc(arcPosition, endPosition)
+        })
+
+    }
+
+
+
+    fun goHome(view: View) {
+        robot.run(kProgram {
+            moveToPoint(TypeOfMovement.LMOVE, robot.homePosition)
+        })
     }
 }

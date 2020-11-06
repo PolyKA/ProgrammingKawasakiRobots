@@ -3,48 +3,21 @@ package com.github.polyKA.kawasakiControlLibrary.handlers
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.art241111.tcpClient.handlers.HandlerImp
-
-class PositionArray(x: Double, y: Double, z: Double, dx: Double, dy: Double, dz: Double){
-    val array: List<Double> = listOf(x, y, z, dx, dy, dz)
-
-    companion object{
-        fun positionArrayFromString(text: String): PositionArray {
-            val text2= text.substringAfter(";").substringBeforeLast(";")
-
-            val position = getDoubleArrayFromString(text2)
-            return PositionArray(x = position[0],
-                                 y = position[1],
-                                 z = position[2],
-                                 dx = position[3],
-                                 dy = position[4],
-                                 dz = position[5],
-                                )
-//            return PositionArray(0.0,0.0,0.0,0.0,0.0,0.0)
-        }
-
-        private fun getDoubleArrayFromString(position: String):MutableList<Double>
-                = position.split(";")
-            .map{value ->
-                String.format("%.2f",value.trim().toDouble())
-                    .replace(",",".")
-                    .toDouble()
-            } as MutableList<Double>
-    }
-}
+import com.github.polyKA.kawasakiControlLibrary.commands.position.positionArray.Position
+import com.github.polyKA.kawasakiControlLibrary.commands.position.positionArray.positionArrayFromString
 
 class PositionHandler: HandlerImp {
-    private val position: MutableLiveData<PositionArray> = MutableLiveData()
-    fun getPosition(): LiveData<PositionArray> = position
+    private val position: MutableLiveData<Position> = MutableLiveData()
+    fun getPosition(): LiveData<Position> = position
 
     init {
-        position.value = PositionArray(0.0,0.0,0.0,0.0,0.0,0.0)
+        position.value = Position()
     }
 
     private var positionStr = ""
 
     override fun handle(text: String) {
-        val text2 = text
-        if(text2.substringBefore(";").trim() == "POINT"){
+        if(text.substringBefore(";").trim() == "POINT"){
             val newPosition = positionParsing(text)
             if(newPosition != null){
                 position.postValue(newPosition)
@@ -52,9 +25,9 @@ class PositionHandler: HandlerImp {
         }
     }
 
-    private fun positionParsing(position: String): PositionArray? =
+    private fun positionParsing(position: String): Position? =
         if(isNewValue(position)){
-            PositionArray.positionArrayFromString(positionStr)
+            Position().positionArrayFromString(positionStr)
         } else{
              null
         }

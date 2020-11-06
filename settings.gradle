@@ -2,3 +2,4 @@ rootProject.name = "ProgrammingKawasakiRobots"
 include ':app'
 include ':tcpclient'
 include ':kawasakiControlLibrary'
+include ':kControlLibrary'

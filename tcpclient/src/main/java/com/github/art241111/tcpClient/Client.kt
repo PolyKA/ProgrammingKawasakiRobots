@@ -10,7 +10,8 @@ import com.github.art241111.tcpClient.writer.RemoteWriterImp
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import com.github.art241111.tcpClient.handlers.HandlerImp
-import com.github.art241111.tcpClient.writer.SenderImp
+import com.github.art241111.tcpClient.writer.Sender
+import kotlinx.coroutines.delay
 import java.net.Socket
 
 /**
@@ -19,9 +20,10 @@ import java.net.Socket
  */
 class Client(){
     private val connection = Connection()
-    private val remoteReader: RemoteReaderImp = RemoteReader()
-    private val remoteWriter: RemoteWriterImp = RemoteWriter()
-    fun getSender(): SenderImp = remoteWriter
+    private val remoteReader = RemoteReader()
+    private val remoteWriter = RemoteWriter()
+    fun getSender(): Sender = remoteWriter
+    fun getSafeSender(): Sender = remoteWriter
 
     private val handlers: MutableList<HandlerImp> = mutableListOf()
 
@@ -51,14 +53,16 @@ class Client(){
      * @param address - server ip port,
      * @param port - server port.
      */
-    fun connect(address: String, port: Int){
+    fun connect(address: String,
+                port: Int,
+                senderDelay: Long = 0L){
         GlobalScope.launch {
             // Connect to tcp server
             connection.connect(address, port)
 
             // When the device connects to the server, it creates Reader and Writer
             if(connection.value != null && connection.value!!.isConnected){
-                startReadingAndWriting(socket = connection.value!!)
+                startReadingAndWriting(socket = connection.value!!, senderDelay)
 
                 // Add handlers to Reader
                 remoteReader.addHandlers(handlers)
@@ -74,7 +78,7 @@ class Client(){
             remoteReader.destroyReader()
             remoteWriter.destroyWriter()
 
-            Thread.sleep(50L)
+            delay(50L)
             connection.disconnect()
         }
     }
@@ -86,8 +90,8 @@ class Client(){
         remoteWriter.send(text)
     }
 
-    private fun startReadingAndWriting(socket: Socket) {
+    private fun startReadingAndWriting(socket: Socket, delay: Long) {
         remoteReader.createReader(socket)
-        remoteWriter.createWriter(socket)
+        remoteWriter.createWriter(socket, delay)
     }
 }
