@@ -1,17 +1,22 @@
 package com.github.poluka.kControlLibrary.handlers
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.github.art241111.tcpClient.handlers.HandlerImp
 import com.github.poluka.kControlLibrary.enity.position.Position
 import com.github.poluka.kControlLibrary.enity.position.positionArrayFromString
+import kotlin.properties.Delegates
 
 class PositionHandler: HandlerImp {
-    private val position: MutableLiveData<Position> = MutableLiveData()
-    fun getPosition(): LiveData<Position> = position
+    // Connect status.
+    var position: Position by Delegates.observable(Position()) { _, oldValue, newValue ->
+        if(oldValue != newValue){
+            onStatusChanged?.invoke(newValue)
+        }
+    }
 
-    init {
-        position.value = Position()
+    private var onStatusChanged: ((Position) -> Unit)? = null
+
+    fun setPositionObserver(observer: ((Position) -> Unit)) {
+        onStatusChanged = observer
     }
 
     private var positionStr = ""
@@ -20,7 +25,7 @@ class PositionHandler: HandlerImp {
         if(text.substringBefore(";").trim() == "POINT"){
             val newPosition = positionParsing(text)
             if(newPosition != null){
-                position.postValue(newPosition)
+                position = newPosition
             }
         }
     }

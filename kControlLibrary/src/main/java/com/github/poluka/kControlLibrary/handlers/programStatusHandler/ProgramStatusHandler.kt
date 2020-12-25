@@ -1,6 +1,5 @@
 package com.github.poluka.kControlLibrary.handlers.programStatusHandler
 
-import android.util.Log
 import com.github.art241111.tcpClient.handlers.HandlerImp
 import com.github.poluka.kControlLibrary.sender.ProgramStatus
 import com.github.poluka.kControlLibrary.sender.ProgramStatusEnum
@@ -19,7 +18,7 @@ class ProgramStatusHandler(private val statusUpdate: ProgramStatusUpdate): Handl
                 )
 
             }
-            Log.d("program_status", text)
+//            Log.d("program_status", text)
         }
     }
 }

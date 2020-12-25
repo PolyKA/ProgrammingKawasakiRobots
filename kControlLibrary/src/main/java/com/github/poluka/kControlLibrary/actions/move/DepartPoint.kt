@@ -2,6 +2,8 @@ package com.github.poluka.kControlLibrary.actions.move
 
 import com.github.poluka.kControlLibrary.actions.Command
 import com.github.poluka.kControlLibrary.actions.annotation.ExecutedOnTheRobot
+import com.github.poluka.kControlLibrary.actions.delay.Delay
+import com.github.poluka.kControlLibrary.dsl.Program
 import com.github.poluka.kControlLibrary.enity.Coordinate
 import com.github.poluka.kControlLibrary.enity.TypeOfMovement
 import com.github.poluka.kControlLibrary.enity.position.Position
@@ -22,3 +24,8 @@ data class DepartPoint(val typeOfMovement: TypeOfMovement = TypeOfMovement.LMOVE
         return MoveToPoint(typeOfMovement, newPosition).run()
     }
 }
+
+fun Program.departPoint(typeOfMovement: TypeOfMovement = TypeOfMovement.LMOVE, position: Position,
+                        dX: Double  = 0.0, dY: Double = 0.0, dZ: Double = 0.0,
+                        dO: Double  = 0.0, dA: Double = 0.0, dT: Double = 0.0)
+        = doWithCommand(DepartPoint(typeOfMovement, position, dX, dY, dZ, dO, dA, dT))

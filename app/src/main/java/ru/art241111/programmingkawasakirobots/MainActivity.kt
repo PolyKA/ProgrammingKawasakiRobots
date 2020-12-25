@@ -22,19 +22,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun connect(view: View) {
-        robot.connect(address, port)
 
-        robot.position.observe(this, {
+        robot.setConnectRobotStatusObserver {
+            Log.d("status_observe", it.toString())
+        }
+
+        robot.setPositionObserver {
             try {
                 Log.d("position_handler", it.toString())
             } catch (e: Exception) {
                 Log.d("position_handler", "error")
             }
-        })
+        }
 
-        robot.connectRobotStatus.observe(this, {
-            Log.d("status_observe", it.toString())
-        })
+        robot.connect(address, port)
+
     }
 
     fun disconnect(view: View) {
@@ -47,14 +49,12 @@ class MainActivity : AppCompatActivity() {
         val arcPosition = Position(0,515,132,90,-180,0)
         val endPosition = Position(-220,515,32,103,-180,6)
 
-        robot.run(kProgram{
-            moveToPoint(TypeOfMovement.LMOVE, startPosition)
-            moveToPoint(TypeOfMovement.JMOVE, arcPosition)
-            moveToPoint(TypeOfMovement.LMOVE, endPosition)
-
-//            moveByArc(arcPosition, endPosition)
-        })
-
+        robot.run(
+                kProgram {
+                    moveToPoint(TypeOfMovement.LMOVE, startPosition)
+                    moveToPoint(TypeOfMovement.JMOVE, arcPosition)
+                    moveToPoint(TypeOfMovement.LMOVE, endPosition)
+                })
     }
 
 
