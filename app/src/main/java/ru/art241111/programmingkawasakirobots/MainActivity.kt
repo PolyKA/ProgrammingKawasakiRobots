@@ -6,13 +6,14 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.github.poluka.kControlLibrary.KRobot
 import com.github.poluka.kControlLibrary.actions.move.MoveToPoint
+import com.github.poluka.kControlLibrary.actions.move.moveToPoint
 import com.github.poluka.kControlLibrary.dsl.kProgram
 import com.github.poluka.kControlLibrary.enity.TypeOfMovement
 import com.github.poluka.kControlLibrary.enity.position.Position
 
 
 class MainActivity : AppCompatActivity() {
-    private val address = "192.168.56.1"
+    private val address = "192.168.31.63"
     private val port = 49152
     private val robot = KRobot()
 
@@ -34,9 +35,13 @@ class MainActivity : AppCompatActivity() {
                 Log.d("position_handler", "error")
             }
         }
-
         robot.connect(address, port)
-
+        // TODO: Дождаться подключения
+        robot.run(
+                kProgram {
+                    moveToPoint(TypeOfMovement.LMOVE,robot.homePosition)
+                }
+        )
     }
 
     fun disconnect(view: View) {

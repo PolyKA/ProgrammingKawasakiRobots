@@ -16,9 +16,7 @@ class ProgramStatusHandler(private val statusUpdate: ProgramStatusUpdate): Handl
                         ProgramStatus(status = ProgramStatusEnum.ERROR)
                         // TODO: add error text
                 )
-
             }
-//            Log.d("program_status", text)
         }
     }
 }

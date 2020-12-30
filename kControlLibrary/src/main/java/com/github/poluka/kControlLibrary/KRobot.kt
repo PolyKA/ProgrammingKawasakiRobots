@@ -9,6 +9,7 @@ import com.github.poluka.kControlLibrary.dsl.runWithAction
 import com.github.poluka.kControlLibrary.sender.SenderForRobot
 import com.github.poluka.kControlLibrary.enity.position.Position
 import com.github.poluka.kControlLibrary.handlers.PositionHandler
+import kotlinx.coroutines.*
 
 class KRobot {
     private val client = Client()
@@ -35,9 +36,14 @@ class KRobot {
     }
 
     fun connect(address: String, port: Int){
-        client.connect(address, port)
-        setPositionHandler()
-        sender.startSending()
+        val job = SupervisorJob()
+        val scope = CoroutineScope(Dispatchers.IO + job)// Add handlers to Reader
+
+        scope.launch {
+            client.connect(address, port)
+            setPositionHandler()
+            sender.startSending()
+        }
     }
 
     fun disconnect(){
