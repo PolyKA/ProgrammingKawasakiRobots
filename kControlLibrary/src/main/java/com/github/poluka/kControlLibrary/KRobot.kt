@@ -35,6 +35,16 @@ class KRobot {
        }
     }
 
+    /**
+     * Launch the program after connecting to the robot.
+     * Made for security, so that before connecting to the robot,
+     * there are no commands other than those that are specifically set.
+     */
+    private lateinit var programWhenConnect: Program
+    fun runWhenConnect(@ExecutedOnTheRobot program: Program){
+        programWhenConnect = program
+    }
+
     fun connect(address: String, port: Int){
         val job = SupervisorJob()
         val scope = CoroutineScope(Dispatchers.IO + job)// Add handlers to Reader
@@ -43,6 +53,10 @@ class KRobot {
             client.connect(address, port)
             setPositionHandler()
             sender.startSending()
+
+            if(this@KRobot::programWhenConnect.isInitialized){
+                run(programWhenConnect)
+            }
         }
     }
 
