@@ -25,6 +25,9 @@ data class DepartPoint(val typeOfMovement: TypeOfMovement = TypeOfMovement.LMOVE
     }
 }
 
+/**
+ * Остановиться на расстоянии от точки.
+ */
 fun Program.departPoint(typeOfMovement: TypeOfMovement = TypeOfMovement.LMOVE, position: Position,
                         dX: Double  = 0.0, dY: Double = 0.0, dZ: Double = 0.0,
                         dO: Double  = 0.0, dA: Double = 0.0, dT: Double = 0.0)

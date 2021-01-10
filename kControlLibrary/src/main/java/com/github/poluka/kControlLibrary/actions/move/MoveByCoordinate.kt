@@ -20,7 +20,13 @@ data class MoveByCoordinate(private val coordinate: Coordinate,
     /**
      * Start program.
      */
-    override fun run() = "$MOVE_BY_COORDINATE;${(coordinate.ordinal + 1)};$distance"
+    override fun run(): String {
+        // Create array with six zero
+        val arrayMoving = Array(6) { 0.0 }
+        arrayMoving[coordinate.ordinal + 1] = distance
+        "$MOVE_BY_COORDINATE;${arrayMoving.joinToString(separator = ";")}"
+        return "$MOVE_BY_COORDINATE;${(coordinate.ordinal + 1)};$distance"
+    }
 }
 
 fun Program.moveByCoordinate(coordinate: Coordinate, distance: Double)
